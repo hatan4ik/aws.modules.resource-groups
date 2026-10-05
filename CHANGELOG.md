@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
+- `docs/DESIGN.md` failure-mode table: added the case of a well-formed but nonexistent `resource_type_filters` entry (for example `AWS::Fake::Thing`), which passes plan-time validation, with what the AWS API reference does and does not say about it.
 - `.github/workflows/integration.yml`: the version comments on the pinned `actions/checkout` (`v7.0.1`) and `aws-actions/configure-aws-credentials` (`v6.3.0`) SHAs named the wrong releases. The pinned SHAs are unchanged.
 
 ## [1.0.0] - 2026-10-05
