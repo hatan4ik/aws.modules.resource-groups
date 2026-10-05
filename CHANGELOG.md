@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The "exactly one of `membership.resource_query` or `membership.configuration`" rule is now a `validation` on `var.membership` instead of a `lifecycle.precondition` on `aws_resourcegroups_group.this`. Same condition and message, still rejected at plan time; the error is now reported against the variable. `locals.tf` no longer carries the defensive "both or neither" fallback, and the `main.tf` comment that claimed a variable validation could not express the choice is corrected. No plan change for any valid caller.
+
+### Fixed
+
+- `.github/workflows/integration.yml`: the version comments on the pinned `actions/checkout` (`v7.0.1`) and `aws-actions/configure-aws-credentials` (`v6.3.0`) SHAs named the wrong releases. The pinned SHAs are unchanged.
+
 ## [1.0.0] - 2026-10-05
 
 Initial version. One `aws_resourcegroups_group` per module call.

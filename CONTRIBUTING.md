@@ -73,7 +73,8 @@ The module has no submodules; concerns are split by file, and each file has one 
 | --- | --- |
 | A new configuration type, query type, or parameter rule | `variables.tf`: accept the value and add a validation for its parameters, citing the AWS documentation in `docs/DESIGN.md`. |
 | Query rendering and normalisation | `locals.tf`. |
-| The group, and invariants across `membership` attributes or the rendered request | `main.tf`, as `lifecycle.precondition`s on `aws_resourcegroups_group.this`. |
+| Invariants across `membership` attributes (they share one variable) | `variables.tf`, as a `validation` on `var.membership`. |
+| The group, and limits of the rendered request (query length, merged tag count) | `main.tf`, as `lifecycle.precondition`s on `aws_resourcegroups_group.this`. |
 | Advisory, non-blocking warnings | `checks.tf`. |
 | Outputs | `outputs.tf`; every output has a description and is asserted in a test. |
 

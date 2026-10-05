@@ -63,6 +63,14 @@ variable "membership" {
   })
   nullable = false
 
+  # Both attributes live in this one object, so the either/or choice is a
+  # plain variable validation. Every other validation, and every local in
+  # locals.tf, may then assume exactly one path is set.
+  validation {
+    condition     = (var.membership.resource_query == null) != (var.membership.configuration == null)
+    error_message = "Set exactly one of membership.resource_query or membership.configuration. AWS accepts a group with a resource query or a service configuration, but not both, and a group with neither has no way to gain members."
+  }
+
   # --- resource_query ------------------------------------------------------
 
   validation {

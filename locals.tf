@@ -1,12 +1,12 @@
 locals {
-  # Which membership path the caller chose. Both or neither is rejected by a
-  # precondition on the group (main.tf); every expression below stays
-  # evaluable in that case so the precondition, not an evaluation error,
-  # reports it.
+  # Which membership path the caller chose. The first validation on
+  # var.membership guarantees exactly one is set.
   has_resource_query = var.membership.resource_query != null
-  has_configuration  = var.membership.configuration != null
-  membership_mode    = local.has_resource_query ? "resource_query" : (local.has_configuration ? "configuration" : null)
+  has_configuration  = !local.has_resource_query
+  membership_mode    = local.has_resource_query ? "resource_query" : "configuration"
 
+  # The query path's input, or empty lists on the configuration path so the
+  # query locals below need no null checks of their own.
   query = local.has_resource_query ? var.membership.resource_query : {
     type                  = null
     tag_filters           = []

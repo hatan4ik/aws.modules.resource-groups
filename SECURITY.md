@@ -15,7 +15,7 @@ Include the module version or commit SHA, the inputs that reproduce the problem,
 
 ## What counts
 
-- A membership bypass: a group created with both a resource query and a service configuration, or with neither, despite the precondition.
+- A membership bypass: a group created with both a resource query and a service configuration, or with neither, despite the `membership` validation.
 - A query that does not mean what the inputs say: a rendered query that drops, merges, or widens a tag filter or resource type filter, so the group contains resources the caller did not select. Group membership drives Systems Manager targeting, so an over-wide group can send commands to the wrong instances.
 - A validation bypass: an input the module claims to reject at plan time (a malformed name, description, tag, tag filter, configuration type, or configuration parameter, or a missing configuration pairing) that reaches the provider instead.
 - A tag precedence regression: the module's `Name` tag overriding a caller's `Name` tag.

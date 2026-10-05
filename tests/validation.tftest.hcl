@@ -573,7 +573,7 @@ run "rejects_both_resource_query_and_configuration" {
       configuration  = [{ type = "AWS::EC2::CapacityReservationPool" }, { type = "AWS::ResourceGroups::Generic", parameters = { "allowed-resource-types" = ["AWS::EC2::CapacityReservation"] } }]
     }
   }
-  expect_failures = [aws_resourcegroups_group.this]
+  expect_failures = [var.membership]
 }
 
 run "rejects_neither_resource_query_nor_configuration" {
@@ -581,7 +581,7 @@ run "rejects_neither_resource_query_nor_configuration" {
   variables {
     membership = {}
   }
-  expect_failures = [aws_resourcegroups_group.this]
+  expect_failures = [var.membership]
 }
 
 run "rejects_a_rendered_query_longer_than_4096_characters" {

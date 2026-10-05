@@ -1,8 +1,8 @@
 # One resource group whose membership is defined by exactly one of a resource
-# query or a service configuration (locals.tf derives which). Variable
-# validations check each path's shape; the preconditions below check what a
-# single variable validation cannot: the choice between the two paths and the
-# limits of the rendered request.
+# query or a service configuration. Variable validations on var.membership
+# enforce that choice and each path's shape; the preconditions below check
+# limits of the rendered request, which depend on locals (the canonical query
+# string, and the module's Name tag merged into the caller's tags).
 
 resource "aws_resourcegroups_group" "this" {
   name        = var.name
@@ -37,11 +37,6 @@ resource "aws_resourcegroups_group" "this" {
   tags = local.tags
 
   lifecycle {
-    precondition {
-      condition     = local.has_resource_query != local.has_configuration
-      error_message = "Set exactly one of membership.resource_query or membership.configuration. AWS accepts a group with a resource query or a service configuration, but not both, and a group with neither has no way to gain members."
-    }
-
     precondition {
       condition     = !local.has_resource_query || length(local.query_json) <= 4096
       error_message = "The rendered resource query is ${length(local.query_json)} characters; AWS accepts at most 4096. Reduce the number of tag_filters values or resource_type_filters."

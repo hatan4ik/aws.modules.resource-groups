@@ -23,7 +23,7 @@ What you get:
 
 - One required `membership` object with two mutually exclusive attributes,
   `resource_query` and `configuration`. The call site names the path it
-  chose; a precondition rejects both or neither at plan time.
+  chose; a variable validation rejects both or neither at plan time.
 - No hand-written JSON. `tag_filters` is a list of `{ key, values }`; the
   module renders the query canonically (sorted, de-duplicated,
   `AWS::AllSupported` when no resource types are given, `Values` omitted for
@@ -130,7 +130,7 @@ membership = {
 
 ```text
 root (one resource group)
-├── main.tf        aws_resourcegroups_group.this, the XOR / query-length / tag-count preconditions
+├── main.tf        aws_resourcegroups_group.this, the query-length / tag-count preconditions
 ├── locals.tf      membership mode, canonical tag filters and resource types, rendered query JSON
 ├── variables.tf   name, description, membership, tags, with every validation
 ├── checks.tf      generic_only_configuration (advisory)

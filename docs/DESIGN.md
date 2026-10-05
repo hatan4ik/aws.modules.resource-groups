@@ -73,8 +73,11 @@ membership = { configuration = [...] }
 The call site names the path it chose, a reader sees both alternatives in one
 type, and `membership` itself has no default, so "neither" cannot happen by
 omission. What the type system still cannot express — exactly one attribute
-non-null — is a `lifecycle.precondition` on the group (`main.tf`), which runs
-before anything reaches AWS. Within each path the type carries as much as it
+non-null — is the first `validation` block on `var.membership`
+(`variables.tf`). Both attributes live in that one variable, so a single
+variable validation can compare them; it runs at plan, before anything reaches
+AWS, and lets every other validation and every local assume exactly one path
+is set. Within each path the type carries as much as it
 can: `tag_filters` is a list of `{ key, values }` objects (never JSON), and
 `configuration` items are `{ type, parameters = map(list(string)) }` matching
 the API's own `GroupConfigurationItem` shape.
@@ -205,7 +208,7 @@ unless it requires a breaking change at the time:
 
 | Failure | When | What happens | Mitigation |
 | --- | --- | --- | --- |
-| Both or neither membership path | plan | precondition fails, nothing sent | message names the fix |
+| Both or neither membership path | plan | `var.membership` validation fails, nothing sent | message names the fix |
 | Malformed query, configuration, name, description, or tags | plan | variable validation fails | every documented constraint is checked |
 | Rendered query over 4,096 characters | plan | precondition fails with the actual length | fewer values or resource types |
 | Name already taken in the region | apply | AWS `BadRequestException` | names are unique per account and region; not checkable without a read |
@@ -245,15 +248,16 @@ AppRegistry-created groups do not count against the group quota.
   on how they were produced, and performs no reads.
 - **Type-system first.** Illegal shapes are type errors where HCL can say so
   (typed filters, no raw JSON), validations where a single variable can say
-  so, and a precondition only for the cross-attribute XOR.
+  so (including the XOR between `membership`'s two attributes, which share one
+  variable), and preconditions only for limits of the rendered request.
 
 ## Architecture
 
 ```text
 root (one resource group)
-├── variables.tf   name, description, membership (resource_query | configuration), tags; every validation
+├── variables.tf   name, description, membership (resource_query | configuration, XOR validated), tags; every validation
 ├── locals.tf      membership mode, canonical tag filters and resource types, rendered query JSON, sorted configuration, tags
-├── main.tf        aws_resourcegroups_group.this: dynamic resource_query / configuration, XOR, query-length, and tag-count preconditions
+├── main.tf        aws_resourcegroups_group.this: dynamic resource_query / configuration, query-length and tag-count preconditions
 ├── checks.tf      generic_only_configuration (advisory)
 └── outputs.tf     arn, name, membership_mode, resource_query, configuration, tags
 ```
