@@ -1,5 +1,5 @@
 output "arn" {
-  description = "ARN of the resource group, for example to reference it from a Network Firewall rule, an EC2 launch targeting a capacity reservation group, or an IAM policy."
+  description = "ARN of the resource group, for example as the capacity reservation target of an EC2 launch, or in an IAM policy."
   value       = aws_resourcegroups_group.this.arn
 }
 
