@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-05
+
 Initial version. One `aws_resourcegroups_group` per module call.
 
 ### Added
@@ -18,3 +20,6 @@ Initial version. One `aws_resourcegroups_group` per module call.
 - Outputs `arn`, `name`, `membership_mode`, `resource_query` (type, rendered query, normalised tag and resource-type filters), `configuration` (normalised, sorted by type), and `tags`.
 - Examples `tag-filters`, `cloudformation-stack`, and `capacity-reservation-pool`.
 - Mock-provider contract tests for both membership paths, every validation and precondition, the advisory check, and every output; a credential-driven `smoke` integration suite.
+
+[Unreleased]: https://github.com/hatan4ik/aws.modules.resource-groups/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/hatan4ik/aws.modules.resource-groups/releases/tag/v1.0.0
