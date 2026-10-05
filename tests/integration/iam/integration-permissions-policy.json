@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ManageTheGroupUnderTest",
+      "Effect": "Allow",
+      "Action": [
+        "resource-groups:CreateGroup",
+        "resource-groups:GetGroup",
+        "resource-groups:GetGroupQuery",
+        "resource-groups:GetGroupConfiguration",
+        "resource-groups:UpdateGroup",
+        "resource-groups:UpdateGroupQuery",
+        "resource-groups:DeleteGroup",
+        "resource-groups:GetTags",
+        "resource-groups:Tag",
+        "resource-groups:Untag"
+      ],
+      "Resource": "arn:aws:resource-groups:*:<ACCOUNT_ID>:group/rg-smoke-*"
+    },
+    {
+      "Sid": "TaggingTheGroupOnCreate",
+      "Effect": "Allow",
+      "Action": [
+        "tag:GetResources",
+        "tag:TagResources",
+        "tag:UntagResources"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
